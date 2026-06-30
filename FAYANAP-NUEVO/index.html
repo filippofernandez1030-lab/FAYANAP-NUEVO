@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fayanap Photography — Fotografía profesional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600;700&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #15120f;
+    --bg-elevated: #1c1814;
+    --cream: #f4ede1;
+    --cream-dim: #cfc4b2;
+    --gold: #c79a4b;
+    --gold-light: #e0b76b;
+    --line: rgba(244,237,225,0.12);
+    --shadow: 0 20px 50px rgba(0,0,0,0.4);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--cream);
+    font-family:'Jost', sans-serif;
+    font-weight:300;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  img{display:block;width:100%;height:100%;object-fit:cover;}
+  a{color:inherit;text-decoration:none;}
+  .eyebrow{
+    color:var(--gold);
+    font-size:0.78rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    font-weight:500;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:24px;
+    height:1px;
+    background:var(--gold);
+  }
+  h1,h2,h3{
+    font-family:'Playfair Display', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 28px;
+    font-size:0.82rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    font-weight:500;
+    border-radius:2px;
+    transition:all 0.3s ease;
+    cursor:pointer;
+    border:1px solid transparent;
+    white-space:nowrap;
+  }
+  .btn-gold{
+    background:var(--gold);
+    color:#15120f;
+  }
+  .btn-gold:hover{
+    background:var(--gold-light);
+    transform:translateY(-2px);
+  }
+  .btn-outline{
+    border-color:rgba(244,237,225,0.35);
+    color:var(--cream);
+  }
+  .btn-outline:hover{
+    border-color:var(--cream);
+    background:rgba(244,237,225,0.06);
+  }
+
+  /* ===== HEADER ===== */
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 60px;
+    background:linear-gradient(to bottom, rgba(0,0,0,0.55), transparent);
+    transition:background 0.3s ease, padding 0.3s ease;
+  }
+  header.scrolled{
+    background:rgba(21,18,15,0.92);
+    backdrop-filter:blur(10px);
+    padding:14px 60px;
+    border-bottom:1px solid var(--line);
+  }
+  .logo{
+    display:flex;
+    flex-direction:column;
+    line-height:1;
+  }
+  .logo .name{
+    font-family:'Playfair Display', serif;
+    font-size:1.5rem;
+    font-weight:600;
+    color:var(--cream);
+  }
+  .logo .tag{
+    font-family:'Mrs Saint Delafield', cursive;
+    font-size:1.2rem;
+    color:var(--gold);
+    margin-top:-4px;
+  }
+  nav{
+    display:flex;
+    align-items:center;
+    gap:40px;
+  }
+  nav ul{
+    display:flex;
+    list-style:none;
+    gap:36px;
+  }
+  nav ul li a{
+    font-size:0.82rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    font-weight:500;
+    color:var(--cream-dim);
+    position:relative;
+    padding-bottom:6px;
+    transition:color 0.25s ease;
+  }
+  nav ul li a:hover, nav ul li a.active{
+    color:var(--gold);
+  }
+  nav ul li a.active::after{
+    content:'';
+    position:absolute;
+    bottom:0; left:0;
+    width:100%;
+    height:2px;
+    background:var(--gold);
+  }
+  .nav-toggle{display:none;}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding:140px 60px 80px;
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(100deg, rgba(15,12,9,0.94) 0%, rgba(15,12,9,0.55) 42%, rgba(15,12,9,0.15) 65%),
+      linear-gradient(to top, rgba(15,12,9,0.6), transparent 40%);
+    z-index:1;
+  }
+  .hero-photo-slot{
+    position:absolute;
+    inset:0;
+    background:#2a2520;
+    z-index:0;
+  }
+  .hero-photo-slot img{opacity:0.9;}
+  .hero-content{
+    position:relative;
+    z-index:2;
+    max-width:620px;
+  }
+  .hero-content .eyebrow{margin-bottom:18px;}
+  .hero-content h1{
+    font-size:3.4rem;
+    color:var(--cream);
+    line-height:1.12;
+    margin-bottom:22px;
+  }
+  .hero-content p{
+    color:var(--cream-dim);
+    font-size:1.05rem;
+    max-width:480px;
+    margin-bottom:34px;
+  }
+  .hero-actions{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+
+  /* ===== SPECIALTIES ===== */
+  .specialties{
+    padding:110px 60px;
+    background:var(--bg);
+  }
+  .section-head{
+    text-align:center;
+    margin-bottom:60px;
+  }
+  .section-head .eyebrow{justify-content:center;}
+  .section-head .eyebrow::before, .section-head .eyebrow::after{
+    content:'';
+    width:30px; height:1px;
+    background:var(--gold);
+  }
+  .section-head h2{
+    font-size:1.1rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--cream);
+    margin-top:14px;
+  }
+  .divider-star{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    margin-top:16px;
+  }
+  .divider-star::before, .divider-star::after{
+    content:'';
+    width:160px; height:1px;
+    background:rgba(199,154,75,0.4);
+  }
+  .star-mark{
+    color:var(--gold);
+    font-size:0.7rem;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:2px;
+    background:var(--line);
+    max-width:1280px;
+    margin:0 auto;
+  }
+  .card{
+    background:var(--bg-elevated);
+    display:flex;
+    flex-direction:column;
+  }
+  .card-label{
+    padding:16px 10px;
+    text-align:center;
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    font-weight:500;
+    color:var(--cream);
+    background:rgba(0,0,0,0.3);
+  }
+  .card-photo{
+    aspect-ratio:1/0.78;
+    background:#26211c;
+    position:relative;
+    overflow:hidden;
+  }
+  .card-photo img{
+    transition:transform 0.6s ease;
+  }
+  .card:hover .card-photo img{
+    transform:scale(1.06);
+  }
+  .card-gallery{
+    aspect-ratio:1/0.78;
+    background:#26211c;
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    gap:2px;
+  }
+  .card-gallery::-webkit-scrollbar{height:5px;}
+  .card-gallery::-webkit-scrollbar-thumb{background:var(--gold); border-radius:4px;}
+  .card-gallery img{
+    flex:0 0 100%;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    scroll-snap-align:start;
+  }
+  .gallery-count{
+    position:absolute;
+    bottom:10px;
+    right:10px;
+    background:rgba(0,0,0,0.55);
+    color:var(--cream);
+    font-size:0.7rem;
+    padding:3px 9px;
+    border-radius:20px;
+    letter-spacing:0.05em;
+    pointer-events:none;
+    z-index:2;
+  }
+  .card-photo-wrap{position:relative;}
+  .card-caption{
+    padding:18px 20px 26px;
+    text-align:center;
+    font-size:0.88rem;
+    color:var(--cream-dim);
+    flex:1;
+  }
+
+  /* ===== ABOUT ===== */
+  .about{
+    background:var(--bg-elevated);
+    padding:110px 60px;
+  }
+  .about-inner{
+    max-width:1280px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:70px;
+    align-items:center;
+  }
+  .about-photo{
+    aspect-ratio:1/0.95;
+    background:#26211c;
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .about-text h2{
+    font-size:2.1rem;
+    color:var(--cream);
+    margin:14px 0 22px;
+  }
+  .about-text p{
+    color:var(--cream-dim);
+    margin-bottom:30px;
+    max-width:480px;
+  }
+
+  /* ===== CTA BAR ===== */
+  .cta-bar{
+    background:linear-gradient(120deg, var(--gold-light), var(--gold));
+    color:#15120f;
+    padding:34px 60px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+  .cta-left{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .cta-icon{
+    width:48px; height:48px;
+    border:1.5px solid rgba(21,18,15,0.5);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .cta-left h3{
+    font-family:'Playfair Display', serif;
+    font-size:1.3rem;
+    margin-bottom:2px;
+  }
+  .cta-left p{
+    font-size:0.88rem;
+    opacity:0.85;
+  }
+  .btn-dark{
+    background:#15120f;
+    color:var(--cream);
+  }
+  .btn-dark:hover{
+    background:#0a0807;
+    transform:translateY(-2px);
+  }
+
+  /* ===== FOOTER ===== */
+  footer{
+    background:#0e0c0a;
+    padding:70px 60px 30px;
+  }
+  .footer-inner{
+    max-width:1280px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    gap:40px;
+    padding-bottom:50px;
+    border-bottom:1px solid var(--line);
+  }
+  .footer-brand .logo{margin-bottom:18px;}
+  .socials{display:flex; gap:14px; margin-top:20px;}
+  .social-icon{
+    width:38px; height:38px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all 0.25s ease;
+  }
+  .social-icon:hover{
+    border-color:var(--gold);
+    background:rgba(199,154,75,0.1);
+  }
+  footer h4{
+    font-size:0.82rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:20px;
+    font-weight:500;
+  }
+  footer ul{list-style:none;}
+  footer ul li{margin-bottom:12px;}
+  footer ul li a{
+    color:var(--cream-dim);
+    font-size:0.92rem;
+    transition:color 0.25s ease;
+  }
+  footer ul li a:hover{color:var(--gold);}
+  .contact-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--cream-dim);
+    font-size:0.92rem;
+    margin-bottom:14px;
+  }
+  .footer-bottom{
+    text-align:center;
+    padding-top:24px;
+    font-size:0.8rem;
+    color:rgba(244,237,225,0.4);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:1100px){
+    .grid{grid-template-columns:repeat(2,1fr);}
+    .about-inner{grid-template-columns:1fr;}
+    .footer-inner{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:880px){
+    header{padding:18px 24px;}
+    nav ul{
+      position:fixed;
+      top:0; right:-100%;
+      width:280px; height:100vh;
+      background:var(--bg-elevated);
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+      padding:0 40px;
+      gap:28px;
+      transition:right 0.35s ease;
+      z-index:99;
+    }
+    nav ul.open{right:0;}
+    .nav-toggle{
+      display:flex;
+      flex-direction:column;
+      gap:5px;
+      cursor:pointer;
+      z-index:101;
+    }
+    .nav-toggle span{
+      width:26px; height:2px;
+      background:var(--cream);
+    }
+    .btn-reserve-header{display:none;}
+    .hero{padding:120px 24px 60px;}
+    .hero-content h1{font-size:2.3rem;}
+    .specialties, .about, footer{padding:70px 24px;}
+    .grid{grid-template-columns:1fr;}
+    .cta-bar{padding:30px 24px; justify-content:center; text-align:center;}
+    .cta-left{flex-direction:column;}
+    .footer-inner{grid-template-columns:1fr; gap:36px;}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="logo">
+    <span class="name">Fayanap</span>
+    <span class="tag">Photography</span>
+  </div>
+  <nav>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+    <ul id="navList">
+      <li><a href="#inicio" class="active">Inicio</a></li>
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#testimonios">Testimonios</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a href="#contacto" class="btn btn-gold btn-reserve-header">Reservar sesión</a>
+  </nav>
+</header>
+
+<section class="hero" id="inicio">
+  <div class="hero-photo-slot">
+    <!-- Reemplaza con tu foto: foto de la fotógrafa o portada -->
+    <img src="img/hero.jpeg" alt="Captura de acción en pista">
+  </div>
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="eyebrow">Capturo emociones</div>
+    <h1>Fotografía profesional<br>para momentos inolvidables</h1>
+    <p>Retratos, deportes, TV, radio, gastronomía, graduaciones, pre bodas, cumpleaños y actividades empresariales.</p>
+    <div class="hero-actions">
+      <a href="#galeria" class="btn btn-gold">Ver galería</a>
+      <a href="#contacto" class="btn btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.81 14.07c-.24.68-1.39 1.32-1.92 1.36-.5.05-1 .27-3.39-.7-2.86-1.18-4.67-4.08-4.81-4.27-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.57-.35.76-.35h.55c.18 0 .42-.07.65.5.24.58.81 1.98.88 2.13.07.14.12.31.02.5-.1.19-.15.31-.3.48-.15.17-.31.38-.45.51-.15.14-.3.3-.13.59.17.29.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.36 1.46.3.14.47.12.65-.07.18-.19.76-.89.96-1.19.2-.3.4-.25.68-.15.28.1 1.77.83 2.08.98.31.15.51.23.59.36.08.13.08.74-.16 1.42z"/></svg>
+        Contáctame
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="specialties" id="galeria">
+  <div class="section-head">
+    <div class="eyebrow" style="justify-content:center;">Mis especialidades</div>
+    <div class="divider-star"><span class="star-mark">✦</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">Retrato</div>
+      <div class="card-photo-wrap">
+        <div class="card-gallery">
+          <img src="img/retrato1.jpeg" alt="Retrato 1">
+          <img src="img/retrato2.jpeg" alt="Retrato 2">
+          <img src="img/retrato3.jpeg" alt="Retrato 3">
+        </div>
+        <span class="gallery-count">1/3 — desliza →</span>
+      </div>
+      <div class="card-caption">Capturo tu esencia con imágenes naturales y elegantes.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Deportivas</div>
+      <div class="card-photo-wrap">
+        <div class="card-gallery">
+          <img src="img/deportivas1.jpeg" alt="Deportes 1">
+          <img src="img/deportivas2.jpeg" alt="Deportes 2">
+          <img src="img/deportivas3.jpeg" alt="Deportes 3">
+          <img src="img/deportivas4.jpeg" alt="Deportes 4">
+          <img src="img/deportivas5.jpeg" alt="Deportes 5">
+          <img src="img/deportivas6.jpeg" alt="Deportes 6">
+        </div>
+        <span class="gallery-count">1/6 — desliza →</span>
+      </div>
+      <div class="card-caption">Fotografía de acción que congela cada momento.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Programas de TV y Radio</div>
+      <div class="card-photo-wrap">
+        <div class="card-gallery">
+          <img src="img/tv1.jpeg" alt="TV y Radio 1">
+          <img src="img/tv2.jpeg" alt="TV y Radio 2">
+          <img src="img/tv3.jpeg" alt="TV y Radio 3">
+          <img src="img/tv4.jpeg" alt="TV y Radio 4">
+          <img src="img/tv5.jpeg" alt="TV y Radio 5">
+          <img src="img/tv6.jpeg" alt="TV y Radio 6">
+          <img src="img/tv7.jpeg" alt="TV y Radio 7">
+          <img src="img/tv8.jpeg" alt="TV y Radio 8">
+          <img src="img/tv9.jpeg" alt="TV y Radio 9">
+        </div>
+        <span class="gallery-count">1/9 — desliza →</span>
+      </div>
+      <div class="card-caption">Cobertura profesional en estudios y eventos mediáticos.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Gastronómicas</div>
+      <div class="card-photo-wrap">
+        <div class="card-gallery">
+          <img src="img/gastro1.jpeg" alt="Gastronomía 1">
+          <img src="img/gastro2.jpeg" alt="Gastronomía 2">
+          <img src="img/gastro3.jpeg" alt="Gastronomía 3">
+          <img src="img/gastro4.jpeg" alt="Gastronomía 4">
+          <img src="img/gastro5.jpeg" alt="Gastronomía 5">
+        </div>
+        <span class="gallery-count">1/5 — desliza →</span>
+      </div>
+      <div class="card-caption">Resalto los sabores y detalles que hacen única cada receta.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Cumpleaños</div>
+      <div class="card-photo-wrap">
+        <div class="card-gallery">
+          <img src="img/cumple1.jpeg" alt="Cumpleaños 1">
+          <img src="img/cumple2.jpeg" alt="Cumpleaños 2">
+          <img src="img/cumple3.jpeg" alt="Cumpleaños 3">
+        </div>
+        <span class="gallery-count">1/3 — desliza →</span>
+      </div>
+      <div class="card-caption">Momentos llenos de alegría que merecen ser recordados.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Actividades empresariales</div>
+      <div class="card-photo-wrap">
+        <div class="card-gallery">
+          <img src="img/emp1.jpeg" alt="Actividades empresariales 1">
+          <img src="img/emp2.jpeg" alt="Actividades empresariales 2">
+          <img src="img/emp3.jpeg" alt="Actividades empresariales 3">
+          <img src="img/emp4.jpeg" alt="Actividades empresariales 4">
+          <img src="img/emp5.jpeg" alt="Actividades empresariales 5">
+          <img src="img/emp6.jpeg" alt="Actividades empresariales 6">
+        </div>
+        <span class="gallery-count">1/6 — desliza →</span>
+      </div>
+      <div class="card-caption">Cobertura de eventos corporativos con enfoque profesional.</div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="sobre-mi">
+  <div class="about-inner">
+    <div class="about-photo">
+      <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=900&q=80" alt="Fotógrafa en acción">
+    </div>
+    <div class="about-text">
+      <div class="eyebrow">Sobre mí</div>
+      <h2>Más que fotos, cuento historias</h2>
+      <p>Soy fotógrafa profesional apasionada por capturar momentos reales, emociones auténticas y detalles que hacen única cada historia. Me enfoco en brindar una experiencia personalizada, cuidando cada detalle para que tus recuerdos perduren para siempre.</p>
+      <a href="#contacto" class="btn btn-gold">Conoce más</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-bar" id="contacto-cta">
+  <div class="cta-left">
+    <div class="cta-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15120f" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+    </div>
+    <div>
+      <h3>¿Lista para capturar tus momentos?</h3>
+      <p>Reserva tu sesión o solicita más información.</p>
+    </div>
+  </div>
+  <a href="#contacto" class="btn btn-dark">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.81 14.07c-.24.68-1.39 1.32-1.92 1.36-.5.05-1 .27-3.39-.7-2.86-1.18-4.67-4.08-4.81-4.27-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07.99-2.35.26-.28.57-.35.76-.35h.55c.18 0 .42-.07.65.5.24.58.81 1.98.88 2.13.07.14.12.31.02.5-.1.19-.15.31-.3.48-.15.17-.31.38-.45.51-.15.14-.3.3-.13.59.17.29.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.36 1.46.3.14.47.12.65-.07.18-.19.76-.89.96-1.19.2-.3.4-.25.68-.15.28.1 1.77.83 2.08.98.31.15.51.23.59.36.08.13.08.74-.16 1.42z"/></svg>
+    Escríbeme por WhatsApp
+  </a>
+</section>
+
+<footer id="contacto">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <span class="name">Fayanap</span>
+        <span class="tag">Photography</span>
+      </div>
+      <p style="color:var(--cream-dim); font-size:0.9rem; max-width:320px;">Fotografía profesional para momentos que merecen ser recordados.</p>
+      <div class="socials">
+        <a href="#" class="social-icon" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="#" class="social-icon" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="#" class="social-icon" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <h4>Enlaces</h4>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#testimonios">Testimonios</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <div class="contact-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2z"/></svg>
+        +1 (809) 000-0000
+      </div>
+      <div class="contact-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>
+        hola@fayanap.com
+      </div>
+      <div class="contact-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-7.58 7-12a7 7 0 10-14 0c0 4.42 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        Santo Domingo, República Dominicana
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Fayanap Photography. Todos los derechos reservados.</div>
+</footer>
+
+<script>
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  const navToggle = document.getElementById('navToggle');
+  const navList = document.getElementById('navList');
+  navToggle.addEventListener('click', () => navList.classList.toggle('open'));
+  navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navList.classList.remove('open')));
+
+  const links = document.querySelectorAll('nav ul li a');
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 200) current = s.getAttribute('id');
+    });
+    links.forEach(l => {
+      l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+    });
+  });
+
+  document.querySelectorAll('.card-gallery').forEach(gallery => {
+    const total = gallery.querySelectorAll('img').length;
+    const counter = gallery.parentElement.querySelector('.gallery-count');
+    if (!counter || total <= 1) { if (counter) counter.style.display = 'none'; return; }
+    gallery.addEventListener('scroll', () => {
+      const idx = Math.round(gallery.scrollLeft / gallery.clientWidth) + 1;
+      counter.textContent = idx + '/' + total + (idx < total ? ' — desliza →' : '');
+    });
+  });
+</script>
+
+</body>
+</html>
